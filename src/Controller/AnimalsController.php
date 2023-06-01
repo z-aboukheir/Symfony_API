@@ -12,11 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Animals;
 use App\Entity\Country;
 
+
+#[Route('/animal')]
 class AnimalsController extends AbstractController
 {
 
 
-    #[Route('/animals', name: 'animals_index', methods: ['GET'])]
+    #[Route('/', name: 'app_animal_index', methods: ['GET'])]
     public function index(AnimalsRepository $animalsRepository): Response
     {
         $animalsObjects = $animalsRepository->findAll();
@@ -26,7 +28,6 @@ class AnimalsController extends AbstractController
             $animalsArray[] = [
                 'id' => $animal->getId(),
                 'name' => $animal->getName(),
-                // Ajoutez ici d'autres champs que vous souhaitez inclure
             ];
         }
 
@@ -34,7 +35,7 @@ class AnimalsController extends AbstractController
     }
 
 
-    #[Route('/country/{countryCode}', name: 'animals_by_country', methods: ['GET'])]
+    #[Route('/{countryCode}', name: 'animals_by_country', methods: ['GET'])]
     public function showByCountry(string $countryCode, CountryRepository $countryRepository): Response
     {
         $country = $countryRepository->findOneBy(['countryCode' => $countryCode]);
@@ -52,7 +53,6 @@ class AnimalsController extends AbstractController
             $animalsArray[] = [
                 'id' => $animal->getId(),
                 'name' => $animal->getName(),
-                // Ajoutez ici d'autres champs que vous souhaitez inclure
             ];
         }
 
@@ -63,7 +63,7 @@ class AnimalsController extends AbstractController
     }
 
 
-    #[Route('/animals/{id}', name: 'animals_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'animals_show', methods: ['GET'])]
     public function show(int $id, AnimalsRepository $animalsRepository): Response
     {
         $animal = $animalsRepository->find($id);
@@ -82,13 +82,12 @@ class AnimalsController extends AbstractController
             'martialArt' => $animal->getMartialArt(),
             'number' => $animal->getNumber(),
             'country' => $animal->getCountry() ? $animal->getCountry()->getName() : null,
-            // Include other fields as needed
         ];
 
         return $this->json($animalArray, Response::HTTP_OK);
     }
 
-    #[Route('/animals', name: 'animals_create', methods: ['POST'])]
+    #[Route('/', name: 'animals_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager, CountryRepository $countryRepository): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -120,14 +119,13 @@ class AnimalsController extends AbstractController
             'martialArt' => $animal->getMartialArt(),
             'number' => $animal->getNumber(),
             'country' => $animal->getCountry() ? $animal->getCountry()->getName() : null,
-            // Include other fields as needed
         ];
 
         return $this->json($animalArray, Response::HTTP_CREATED);
     }
 
 
-    #[Route('/animals/{id}', name: 'animals_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'animals_delete', methods: ['DELETE'])]
     public function delete(int $id, AnimalsRepository $animalsRepository, EntityManagerInterface $entityManager): Response
     {
         $animal = $animalsRepository->find($id);
@@ -146,7 +144,6 @@ class AnimalsController extends AbstractController
             'martialArt' => $animal->getMartialArt(),
             'number' => $animal->getNumber(),
             'country' => $animal->getCountry() ? $animal->getCountry()->getName() : null,
-            // Include other fields as needed
         ];
 
         $entityManager->remove($animal);
@@ -157,7 +154,7 @@ class AnimalsController extends AbstractController
 
 
 
-    #[Route('/animals/{id}', name: 'animals_update', methods: ['PUT'])]
+    #[Route('/{id}', name: 'animals_update', methods: ['PUT'])]
     public function update(int $id, Request $request, AnimalsRepository $animalsRepository, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -186,13 +183,12 @@ class AnimalsController extends AbstractController
             'martialArt' => $animal->getMartialArt(),
             'number' => $animal->getNumber(),
             'country' => $animal->getCountry() ? $animal->getCountry()->getName() : null,
-            // Include other fields as needed
         ];
     
         return $this->json($animalArray);
     }
     
-    #[Route('/animals/{id}/country', name: 'animals_update_country', methods: ['PATCH'])]
+    #[Route('/{id}/country', name: 'animals_update_country', methods: ['PATCH'])]
     public function updateCountry(int $id, Request $request, AnimalsRepository $animalsRepository, CountryRepository $countryRepository, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
@@ -225,7 +221,6 @@ class AnimalsController extends AbstractController
             'martialArt' => $animal->getMartialArt(),
             'number' => $animal->getNumber(),
             'country' => $animal->getCountry() ? $animal->getCountry()->getName() : null,
-            // Include other fields as needed
         ];
     
         return $this->json($animalArray);
