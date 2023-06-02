@@ -13,7 +13,7 @@ use App\Entity\Animals;
 use App\Entity\Country;
 
 
-#[Route('/animal')]
+#[Route('/animals')]
 class AnimalsController extends AbstractController
 {
 
